@@ -14,7 +14,12 @@ public class Driver {
         // TODO: complete this method
 		// We will call this method from our JUnit test cases.
 
-        //pass all three of these down to Game() constructor?
-
+        //the current game being played
+        Game currentGame = new Game(isTesting,config,generator);
+        while(currentGame.playAgain) {
+            currentGame.runGame(); //start the game
+            //once the game finishes prompt if they want to playagain;
+            currentGame.playAgain();
+        }
     }
 }
