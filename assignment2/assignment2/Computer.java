@@ -13,19 +13,45 @@ public class Computer {
         this.answer = new FormattedGuess(code.length(),0,code);
     }
 
-    public boolean guessEvaluate(String guess){ //make it return a boolean on whether they have gotten it right.
+    //false if wrong answer, true if correct answer
+    public boolean guessEvaluate(String guess){
         if(guess.equals("HISTORY")){
-            //run the history routine
             System.out.println("history command");
             System.out.println(evalGuesses);
             return false;
         }
 
+        //colored peg generation
+        int b=0;
+        int w=0;
+        StringBuilder codeCopy = new StringBuilder(answer.guess);
+        StringBuilder guessCopy = new StringBuilder(guess);
+        for(int i = 0;i<codeCopy.length();i++){
+            if(codeCopy.charAt(i)==guessCopy.charAt(i)) {
+                b++;
+                codeCopy.deleteCharAt(i);
+                guessCopy.deleteCharAt(i);
+                i--;
+            }
+        }
+        for(int i = 0;i<codeCopy.length();i++){
+            for(int j = 0;j<codeCopy.length();j++){
+                if(codeCopy.charAt(i)==guessCopy.charAt(j)){
+                    w++;
+                    codeCopy.deleteCharAt(i);
+                    guessCopy.deleteCharAt(j);
+                    i--;
+                    break;
+                }
+            }
+        }
 
 
-        FormattedGuess newGuess = new FormattedGuess(0,0,guess);
-        evalGuesses.add(newGuess);
-
+        FormattedGuess UserGuess = new FormattedGuess(b,w,guess);
+        evalGuesses.add(UserGuess);
+        if(UserGuess.equals(answer)){
+            return true;
+        }
         return false;
     }
 }
