@@ -9,9 +9,7 @@ public class Player {
     }
     public String Guess(){
         System.out.println("Enter Guess:");
-        String guess = scan.next();
-        System.out.println(guess); //DEBUG
-        return guess;
+        return scan.next();
     }
 
 }
