@@ -7,7 +7,7 @@ import java.util.ArrayList;
 //also holds the history of all the guesses that are passed into it
 public class Computer {
     private final FormattedGuess answer; //the response that is completely correct
-    private final ArrayList<String> evalGuesses = new ArrayList<>(); //all the guesses after they've been evaluated
+    private final ArrayList<FormattedGuess> evalGuesses = new ArrayList<>(); //all the guesses after they've been evaluated
 
     public Computer(String code){
         this.answer = new FormattedGuess(code.length(),0,code);
@@ -19,25 +19,14 @@ public class Computer {
             System.out.println("history command");
             System.out.println(evalGuesses);
             return false;
-        }else if(guess.equals("TRUECOM")){
-            return true;
         }
-        System.out.println("not history command");
-        evalGuesses.add(guess);
+
+
+
+        FormattedGuess newGuess = new FormattedGuess(0,0,guess);
+        evalGuesses.add(newGuess);
+
         return false;
     }
-
 }
 
-class FormattedGuess extends Response{
-    public String guess;
-    public FormattedGuess(int b, int w, String userGuess){
-        super(b,w);
-        this.guess = userGuess;
-    }
-
-    //generate String
-    public String feedbackStringGenerate(){
-        return (guess + " -> "+b+"b_"+w+"w");
-    }
-}

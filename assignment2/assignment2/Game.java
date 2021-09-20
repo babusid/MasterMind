@@ -13,6 +13,7 @@ public class Game {
     public boolean playAgain; //boolean controlling repeated playing
     private final Player player; //player object
     private Computer computer; //computer object
+    private String code; //the code we pass to the computer
     private Integer guesses; //how many guesses the player gets
 
     //constructor
@@ -25,7 +26,8 @@ public class Game {
         this.scan = new Scanner(System.in);
         this.playAgain = true;
         this.player = new Player(this.scan);
-        this.computer = new Computer(this.gen.getNewSecretCode());
+        this.code = this.gen.getNewSecretCode();
+        this.computer = new Computer(this.code);
         this.guesses = this.config.guessNumber;
     }
 
@@ -41,16 +43,29 @@ public class Game {
         System.out.println("Testing:"+this.test);
         this.gen.printConfig();
     //END DEBUG
+
+
+
+
         while(this.guesses>0){
             String guess = player.Guess();
-            if(guess.equals("HISTORY")){this.guesses++;}
+
+            //History command shouldn't affect guess total
+            if(guess.equals("HISTORY")){
+                this.guesses++;
+            }
+
+            //evaluate all valid guesses that come in, if we get a true (correct response) break loop
             if(computer.guessEvaluate(guess)){
                 break;
             }
+            //deduct guesses
             guesses--;
+            System.out.println("You have "+guesses+" guess(es) left.");
         }
         if(this.guesses>0){
             //Win case
+            System.out.println("You win!");
         }
         //Loss case
     }
