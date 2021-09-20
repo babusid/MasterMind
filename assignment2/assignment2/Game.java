@@ -41,6 +41,7 @@ public class Game {
     //DEBUG
         System.out.println("debug run game");
         System.out.println("Testing:"+this.test);
+        System.out.println("Code: "+this.code);
         this.gen.printConfig();
     //END DEBUG
 
