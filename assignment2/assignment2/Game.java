@@ -6,24 +6,27 @@ import java.util.Scanner;
 //It will function as the "arena" for the player and computer classes
 public class Game {
     private final boolean test;
-    private final GameConfiguration conf;
     private final SecretCodeGenerator gen;
+    private final GameConfiguration config;
 
-    private final Scanner scan;
-    private String code;
-    public boolean playAgain;
-
+    private final Scanner scan; //scanner object
+    public boolean playAgain; //boolean controlling repeated playing
+    private final Player player; //player object
+    private Computer computer; //computer object
+    private Integer guesses; //how many guesses the player gets
 
     //constructor
     public Game(boolean isTesting, GameConfiguration config, SecretCodeGenerator generator){
         //game constructor
         this.test = isTesting;
-        this.conf = config; //may not be needed, will delete if that's the case
+        this.gen = generator;
+        this.config = config;
 
         this.scan = new Scanner(System.in);
         this.playAgain = true;
-        this.gen = generator;
-        this.code = this.gen.getNewSecretCode();
+        this.player = new Player(this.scan);
+        this.computer = new Computer(this.gen.getNewSecretCode());
+        this.guesses = this.config.guessNumber;
     }
 
     //main game logic here
@@ -32,13 +35,24 @@ public class Game {
             //print the testing stuff
             System.out.println("testing mode");
         }
-     //main logic
+
+    //DEBUG
         System.out.println("debug run game");
         System.out.println("Testing:"+this.test);
-        System.out.println(conf);
-        System.out.println("code:"+this.code);
-
-
+        this.gen.printConfig();
+    //END DEBUG
+        while(this.guesses>0){
+            String guess = player.Guess();
+            if(guess.equals("HISTORY")){this.guesses++;}
+            if(computer.guessEvaluate(guess)){
+                break;
+            }
+            guesses--;
+        }
+        if(this.guesses>0){
+            //Win case
+        }
+        //Loss case
     }
 
     //prompt user to play the game again and return the boolean whether they want to
@@ -51,7 +65,8 @@ public class Game {
                 System.out.println("Please input either Y or N only.");
             } else if(response == 'Y') {
                 this.playAgain = true;
-                this.code = this.gen.getNewSecretCode();
+                this.guesses = this.config.guessNumber;
+                this.computer = new Computer(this.gen.getNewSecretCode());
                 invalid = false;
             } else {
                 this.playAgain = false;
